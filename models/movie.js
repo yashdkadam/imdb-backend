@@ -73,7 +73,6 @@ const movieSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
   },
   description: {
     type: String,
@@ -91,7 +90,6 @@ const movieSchema = new mongoose.Schema({
   ],
   genreId: {
     type: genreSchema,
-    required: true,
   },
   storyline: {
     type: String,
