@@ -1,92 +1,165 @@
-const Joi = require('joi');
-const mongoose = require('mongoose');
-const {genreSchema} = require('./genre');
+const Joi = require("joi");
+const mongoose = require("mongoose");
+const { genreSchema } = require("./genre");
 
-const Movie = mongoose.model(
-  "Movies",
-  new mongoose.Schema({
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 5,
-      maxlength: 255,
+const commentSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  comment: {
+    type: String,
+    maxlength: 3000,
+    required: true,
+  },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    imgUrl: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 5,
-      maxlength: 255,
+  ],
+  dislikes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    description: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 5,
-      maxlength: 2550,
-    },
-    cast: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 5,
-      maxlength: 255,
-    },
-    genre: {
-      type: genreSchema,
-      required: true,
-    },
-    storyline: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 5,
-      maxlength: 2550,
-    },
-    awards: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 5,
-      maxlength: 2550,
-    },
-    length: {
-      type: Number,
-      required: true,
-    },
-    budget: {
-      type: Number,
-      required: true,
-    },
-    box_collection: {
-      type: Number,
-      required: true,
-    },
-    release_date:{
-      type: Date,
-      required: true,
-    }
-  })
-);
+  ],
+});
 
-function validateMovie(movie) {
-  const schema = {
-    title: Joi.string().min(5).max(50).required(),
-    genreId: Joi.objectId().required(),
-    imgUrl: Joi.string(),
-    description: Joi.string(),
-    cast: Joi.string(),
-    storyline: Joi.string(),
-    length: Joi.number(),
-    awards: Joi.string(),
-    budget: Joi.number(),
-    box_collection: Joi.number(),
-    release_date: Joi.date()
-  };
+const reviewSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  review: {
+    type: String,
+    maxlength: 3000,
+    required: true,
+  },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  dislikes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  comments: [commentSchema],
+});
 
-  return Joi.validate(movie, schema);
-}
+const ratingSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  review: {
+    type: String,
+    maxlength: 3000,
+  },
+});
 
-exports.Movie = Movie; 
-exports.validate = validateMovie;
+const movieSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  cast: [
+    {
+      type: String,
+    },
+  ],
+  crew: [
+    {
+      type: String,
+    },
+  ],
+  genreId: {
+    type: genreSchema,
+    required: true,
+  },
+  storyline: {
+    type: String,
+    required: true,
+  },
+  runningTime: {
+    type: Number,
+    required: true,
+  },
+  awards: {
+    type: String,
+  },
+  budget: {
+    type: Number,
+  },
+  boxOfficeCollection: {
+    type: Number,
+  },
+  releaseDate: {
+    type: Date,
+    required: true,
+  },
+  ratings: [ratingSchema],
+  reviews: [reviewSchema],
+});
+
+// const userSchema = new mongoose.Schema({
+//   username: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//   },
+//   password: {
+//     type: String,
+//     required: true,
+//   },
+// });
+
+// const User = mongoose.model("User", userSchema);
+const Movie = mongoose.model("Movie", movieSchema);
+
+
+
+
+// function validateMovie(movie) {
+//   const schema = {
+//     title: Joi.string().min(5).max(50).required(),
+//     genreId: Joi.objectId().required(),
+//     imgUrl: Joi.string(),
+//     description: Joi.string(),
+//     cast: Joi.string(),
+//     storyline: Joi.string(),
+//     length: Joi.number(),
+//     awards: Joi.string(),
+//     budget: Joi.number(),
+//     box_collection: Joi.number(),
+//     release_date: Joi.date(),
+//   };
+  
+//   return Joi.validate(movie, schema);
+// }
+
+// exports.validate = validateMovie;
+module.exports = {
+  Movie,
+};

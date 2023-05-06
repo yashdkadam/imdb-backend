@@ -1,4 +1,4 @@
-const { Movie, validate } = require("../models/movie");
+const { Movie} = require("../models/movie");
 const { Genre } = require("../models/genre");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
+
 router.get("/", async (req, res) => {
   const movies = await Movie.find()
     .select("-__v")
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validate(req.body);
+  // const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const genre = await Genre.findById(req.body.genreId);
@@ -26,18 +27,18 @@ router.post("/", async (req, res) => {
     title: req.body.title,
     genre: {
       _id: genre._id,
-      name: genre.name
+      name: genre.name,
     },
-    imgUrl: req.body.imgUrl,
+    image: req.body.imgUrl,
     description: req.body.description,
     cast: req.body.cast,
     storyline: req.body.storyline,
-    length: req.body.length,
+    runningTime: req.body.runningTime,
     awards: req.body.awards,
     budget: req.body.budget,
-    box_collection: req.body.box_collection,
-    release_date: req.body.release_date,
-    publishDate: moment().toJSON()
+    boxOfficeCollection: req.body.boxOfficeCollection,
+    releaseDate: req.body.releaseDate,
+    publishDate: moment().toJSON(),
   });
   await movie.save();
 
@@ -45,7 +46,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const { error } = validate(req.body);
+  // const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const genre = await Genre.findById(req.body.genreId);
