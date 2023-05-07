@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { genreSchema } = require("./genre");
 
 const commentSchema = new mongoose.Schema({
+  type: mongoose.Schema.Types.Mixed,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -27,6 +28,7 @@ const commentSchema = new mongoose.Schema({
 });
 
 const reviewSchema = new mongoose.Schema({
+  type: mongoose.Schema.Types.Mixed,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -52,6 +54,7 @@ const reviewSchema = new mongoose.Schema({
 });
 
 const ratingSchema = new mongoose.Schema({
+  type: mongoose.Schema.Types.Mixed,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -112,8 +115,12 @@ const movieSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  ratings: [ratingSchema],
-  reviews: [reviewSchema],
+  ratings: {
+    type: mongoose.Schema.Types.Mixed
+  },
+  reviews:{
+    type: mongoose.Schema.Types.Mixed,
+  }
 });
 
 // const userSchema = new mongoose.Schema({

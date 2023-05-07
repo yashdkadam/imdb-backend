@@ -38,6 +38,8 @@ router.post("/", async (req, res) => {
     budget: req.body.budget,
     boxOfficeCollection: req.body.boxOfficeCollection,
     releaseDate: req.body.releaseDate,
+    ratings: req.body.ratings,
+    reviews: req.body.reviews,
     publishDate: moment().toJSON(),
   });
   await movie.save();
