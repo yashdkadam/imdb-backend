@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const movies = await Movie.find().select("-__v").sort("overallRating");
+  const movies = await Movie.find().select("-__v").sort({ overallRating: -1 });
   res.send(movies);
 });
 
@@ -55,24 +55,24 @@ router.put("/:id", async (req, res) => {
   const movie = await Movie.findByIdAndUpdate(
     req.params.id,
     {
-        title: req.body.title,
-        genre: {
-          _id: genre._id,
-          name: genre.name,
-        },
-        image: req.body.imgUrl,
-        description: req.body.description,
-        cast: req.body.cast,
-        storyline: req.body.storyline,
-        runningTime: req.body.runningTime,
-        awards: req.body.awards,
-        overallRating: req.body.overallRating,
-        budget: req.body.budget,
-        boxOfficeCollection: req.body.boxOfficeCollection,
-        releaseDate: req.body.releaseDate,
-        ratings: req.body.ratings,
-        reviews: req.body.reviews,
+      title: req.body.title,
+      genre: {
+        _id: genre._id,
+        name: genre.name,
       },
+      image: req.body.imgUrl,
+      description: req.body.description,
+      cast: req.body.cast,
+      storyline: req.body.storyline,
+      runningTime: req.body.runningTime,
+      awards: req.body.awards,
+      overallRating: req.body.overallRating,
+      budget: req.body.budget,
+      boxOfficeCollection: req.body.boxOfficeCollection,
+      releaseDate: req.body.releaseDate,
+      ratings: req.body.ratings,
+      reviews: req.body.reviews,
+    },
     { new: true }
   );
 
