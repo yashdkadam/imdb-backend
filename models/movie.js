@@ -81,6 +81,10 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  overallRating:{
+    type: Number,
+    required: true,
+  },
   cast: [
     {
       type: String,
