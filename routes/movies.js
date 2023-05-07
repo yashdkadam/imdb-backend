@@ -1,4 +1,4 @@
-const { Movie} = require("../models/movie");
+const { Movie } = require("../models/movie");
 const { Genre } = require("../models/genre");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
@@ -7,7 +7,6 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-
 
 router.get("/", async (req, res) => {
   const movies = await Movie.find().select("-__v").sort("overallRating");
@@ -33,6 +32,7 @@ router.post("/", async (req, res) => {
     storyline: req.body.storyline,
     runningTime: req.body.runningTime,
     awards: req.body.awards,
+    overallRating: req.body.overallRating,
     budget: req.body.budget,
     boxOfficeCollection: req.body.boxOfficeCollection,
     releaseDate: req.body.releaseDate,
@@ -55,14 +55,24 @@ router.put("/:id", async (req, res) => {
   const movie = await Movie.findByIdAndUpdate(
     req.params.id,
     {
-      title: req.body.title,
-      genre: {
-        _id: genre._id,
-        name: genre.name
+        title: req.body.title,
+        genre: {
+          _id: genre._id,
+          name: genre.name,
+        },
+        image: req.body.imgUrl,
+        description: req.body.description,
+        cast: req.body.cast,
+        storyline: req.body.storyline,
+        runningTime: req.body.runningTime,
+        awards: req.body.awards,
+        overallRating: req.body.overallRating,
+        budget: req.body.budget,
+        boxOfficeCollection: req.body.boxOfficeCollection,
+        releaseDate: req.body.releaseDate,
+        ratings: req.body.ratings,
+        reviews: req.body.reviews,
       },
-      numberInStock: req.body.numberInStock,
-      dailyRentalRate: req.body.dailyRentalRate
-    },
     { new: true }
   );
 
